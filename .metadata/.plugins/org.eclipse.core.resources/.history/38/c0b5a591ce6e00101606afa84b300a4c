@@ -1,0 +1,29 @@
+package test;
+
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+
+import base.BaseTest;
+import base.listener;
+import page.LoginPage;
+import utility.ExcelUtil;
+
+@Listeners(listeners.ExtentListener.class)
+public class loginTest extends BaseTest {
+	
+	 @Test(dataProvider = "loginData")
+	    public void loginTestWithExcel(String username, String password) {
+	        LoginPage login = new LoginPage(driver);
+	        login.enterUsername(username);
+	        login.enterPassword(password);
+	        login.clickLogin();
+	    }
+
+	    @DataProvider(name = "loginData")
+	    public Object[][] loginData() {
+	        String excelPath = "testdata/test1.xlsx";
+	        return ExcelUtil.readExcelData(excelPath, "Sheet1");
+	    }
+
+}
